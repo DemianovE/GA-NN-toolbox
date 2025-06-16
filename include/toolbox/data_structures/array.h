@@ -14,7 +14,7 @@
 typedef struct Array {
   float *data; // the array itself
   size_t length; // the length og the array
-  size_t index; // the current index of the array
+  size_t index; // the index of the next free cell of the array (used for inner size calculations)
 } Array;
 
 /*
