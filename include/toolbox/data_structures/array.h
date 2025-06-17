@@ -51,6 +51,15 @@ typedef struct Array {
   size_t index; // the index of the next free cell of the array (used for inner size calculations)
 } Array;
 
+
+
+
+//=============================================================================
+//
+//                     Array Lifecycle Management Functions
+//
+//=============================================================================
+
 /*!
  * @ingroup ArrayLifecycle
  * @brief Creates and initializes a new dynamic array.
@@ -69,23 +78,27 @@ Array* Array_Create(const size_t length);
 Array* Array_Concat(const Array* array1, const Array* array2);
 
 /*!
- * @ingroup ArrayManipulation
- * @brief Get and return a slice of the array data.
- * @param array the array from which slice is made.
- * @param start starting index of the slice.
- * @param numberOfElements number of elements in the slice.
- * @return A pointer to the new Array instance with the desired data.
- * @note this was created to make the Matrix function be able to get rows
- */
-Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size_t numberOfElements);
-
-/*!
  * @ingroup ArrayLifecycle
  * @brief Copy Array to a new Array pointer and return.
  * @param arrayFrom the array from which copy will be made.
  * @return A pointer to the new Array instance.
  */
 Array* Array_MakeCopy(const Array *arrayFrom);
+
+/*!
+ * @ingroup ArrayLifecycle
+ * @brief Destroy the pointer of the struct Array.
+ * @param array the array which will be destroyed.
+ */
+void Array_Destroy(Array *array);
+
+
+
+//=============================================================================
+//
+//                     Array Query Functions
+//
+//=============================================================================
 
 /*!
  * @ingroup ArrayQuery
@@ -95,6 +108,25 @@ Array* Array_MakeCopy(const Array *arrayFrom);
  * @return A float value of the index.
  */
 float Array_GetCoordinate(const Array *array, const size_t index);
+
+
+
+//=============================================================================
+//
+//                     Array Manipulation Functions
+//
+//=============================================================================
+
+/*!
+ * @ingroup ArrayManipulation
+ * @brief Get and return a slice of the array data.
+ * @param array the array from which slice is made.
+ * @param start starting index of the slice.
+ * @param numberOfElements number of elements in the slice.
+ * @return A pointer to the new Array instance with the desired data.
+ * @note this was created to make the Matrix function be able to get rows
+ */
+Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size_t numberOfElements);
 
 /*!
  * @ingroup ArrayManipulation
@@ -114,13 +146,6 @@ void Array_SetCoordinate(const Array *array, const size_t index, const float val
  * @param values the float type pointer to the data to be added.
  */
 void Array_SetDataFromTo(const Array *array, const size_t start, const size_t numberOfElements, const float *values);
-
-/*!
- * @ingroup ArrayLifecycle
- * @brief Destroy the pointer of the struct Array.
- * @param array the array which will be destroyed.
- */
-void Array_Destroy(Array *array);
 
 /*!
  * @ingroup ArrayManipulation

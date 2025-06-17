@@ -30,6 +30,14 @@ static void Array_Double(Array *array){
   for(size_t i = array->index; i < array->length; i++) array->data[i] = 0.0f;
 }
 
+
+
+//=============================================================================
+//
+//                     Array Lifecycle Management Functions
+//
+//=============================================================================
+
 Array* Array_Create(const size_t length){
   assert(length >= 0 && "The size of array should be positive");
 
@@ -60,6 +68,38 @@ Array* Array_Concat(const Array* array1, const Array* array2){
   return newArray;
 }
 
+Array* Array_MakeCopy(const Array *arrayFrom){
+  Array *output = Array_Create(arrayFrom->length);
+  memcpy(output->data, arrayFrom->data, arrayFrom->index * sizeof(float));
+  return output;
+}
+
+void ArrayDestroy(Array *array){
+  if (array == NULL) { return; }
+  free(array->data);
+  free(array);
+}
+
+
+
+//=============================================================================
+//
+//                     Array Query Functions
+//
+//=============================================================================
+
+float Array_GetCoordinate(const Array *array, const size_t index){
+  return array->data[index];
+}
+
+
+
+//=============================================================================
+//
+//                     Array Manipulation Functions
+//
+//=============================================================================
+
 Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size_t numberOfElements){
   Array* output = Array_Create(numberOfElements);
   float *data = malloc((numberOfElements) * sizeof(float));
@@ -69,16 +109,6 @@ Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size
   free(data);
 
   return output;
-}
-
-Array* Array_MakeCopy(const Array *arrayFrom){
-  Array *output = Array_Create(arrayFrom->length);
-  memcpy(output->data, arrayFrom->data, arrayFrom->index * sizeof(float));
-  return output;
-}
-
-float Array_GetCoordinate(const Array *array, const size_t index){
-  return array->data[index];
 }
 
 void Array_SetCoordinate(const Array *array, const size_t index, const float value){
@@ -118,8 +148,3 @@ void Array_AppendPointer(Array *array, const float *values, const size_t pointer
   array->index += pointerLength;
 }
 
-void ArrayDestroy(Array *array){
-  if (array == NULL) { return; }
-  free(array->data);
-  free(array);
-}
