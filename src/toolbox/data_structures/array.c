@@ -1,6 +1,9 @@
-//
-// Created by egor on 13.06.25.
-//
+/**
+ * @file array.c
+ * @brief Dynamic Array data structure public interface implementation.
+ *
+ * This file defines all implementations of the Array public interface
+ */
 
 #include "array.h"
 
@@ -10,27 +13,6 @@
 #include <string.h>
 
 #include "matrix.h"
-
-/*!
- * @ingroup ArrayLifecycle
- * @brief Double the size of the array.
- * @param array the array to be doubled.
- */
-static void Array_Double(Array *array){
-  assert(array != NULL && "The array pointer can be NULL!");
-
-  if (array->length == 0) {array->length = 1;}
-
-  float *new_data_ptr = realloc(array->data, array->length * 2 * sizeof(float));
-  if (new_data_ptr == NULL){ perror("realloc command failed"); Array_Destroy(array); exit(EXIT_FAILURE); }
-
-  array->data = new_data_ptr;
-  array->length = array->length * 2;
-
-  for(size_t i = array->index; i < array->length; i++) array->data[i] = 0.0f;
-}
-
-
 
 //=============================================================================
 //
@@ -100,6 +82,25 @@ float Array_GetCoordinate(const Array *array, const size_t index){
 //
 //=============================================================================
 
+/*!
+ * @ingroup ArrayManipulation
+ * @brief Double the size of the array.
+ * @param array the array to be doubled.
+ */
+static void Array_Double(Array *array){
+  assert(array != NULL && "The array pointer can be NULL!");
+
+  if (array->length == 0) {array->length = 1;}
+
+  float *new_data_ptr = realloc(array->data, array->length * 2 * sizeof(float));
+  if (new_data_ptr == NULL){ perror("realloc command failed"); Array_Destroy(array); exit(EXIT_FAILURE); }
+
+  array->data = new_data_ptr;
+  array->length = array->length * 2;
+
+  for(size_t i = array->index; i < array->length; i++) array->data[i] = 0.0f;
+}
+
 Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size_t numberOfElements){
   Array* output = Array_Create(numberOfElements);
   float *data = malloc((numberOfElements) * sizeof(float));
@@ -147,4 +148,3 @@ void Array_AppendPointer(Array *array, const float *values, const size_t pointer
   memcpy(array->data + array->index, values, pointerLength * sizeof(float));
   array->index += pointerLength;
 }
-

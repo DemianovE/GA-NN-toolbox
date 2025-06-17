@@ -1,18 +1,9 @@
 /**
-* @file array.h
+ * @file array.h
  * @brief Dynamic Array data structure public interface.
  *
  * This header defines the public interface for the Array data structure.
  * It includes type definitions and function declarations.
- */
-
-/*
- * Created by egor on 13.06.25. :)
- * Please note, this DS is an implementation of the Dynamic array with the active size and index
- * This is made to avoid issue with the incorrect size sharing.
- *
- * But most of the functions in the toolbox always have the fixed size. So the Dynamic part is a precaution in case it will be necessary
- * For the same reason of very specific usage, the following Interface is not a full implementation of the Array logic, avoiding unnecessary functions
  */
 
 #ifndef ARRAY_H
@@ -63,7 +54,7 @@ typedef struct Array {
 /*!
  * @ingroup ArrayLifecycle
  * @brief Creates and initializes a new dynamic array.
- * @param length The desired length of the array.
+ * @param length the desired length of the array.
  * @return A pointer to the new Array instance.
  */
 Array* Array_Create(const size_t length);
@@ -166,7 +157,6 @@ void Array_AppendPointer(Array *array, const float *values, const size_t pointer
 
 #endif //ARRAY_H
 
-
 /**
 * @defgroup Array Array
 * @ingroup DataStructures
@@ -176,7 +166,7 @@ void Array_AppendPointer(Array *array, const float *values, const size_t pointer
 /**
 * @defgroup ArrayLifecycle Array Lifecycle
 * @ingroup Array
-* @brief Livsycle functions of the Array.
+* @brief Lifecycle functions of the Array.
 *
 * This functions create/destroy/copy Array
 */
