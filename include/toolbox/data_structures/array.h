@@ -98,8 +98,15 @@ void Array_Destroy(Array *array);
  * @param index value of the index of desired value.
  * @return A float value of the index.
  */
-float Array_GetCoordinate(const Array *array, const size_t index);
+float Array_GetValue(const Array *array, const size_t index);
 
+/*!
+ * @ingroup ArrayQuery
+ * @brief Return the array itself from Array.
+ * @param array the array from which values will be retrieved.
+ * @return A float type pointer array of values.
+ */
+float* Array_GetArray(const Array *array);
 
 
 //=============================================================================

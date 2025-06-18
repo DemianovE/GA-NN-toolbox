@@ -70,10 +70,13 @@ void ArrayDestroy(Array *array){
 //
 //=============================================================================
 
-float Array_GetCoordinate(const Array *array, const size_t index){
+float Array_GetValue(const Array *array, const size_t index){
   return array->data[index];
 }
 
+float* Array_GetArray(const Array *array){
+  return array->data;
+}
 
 
 //=============================================================================
