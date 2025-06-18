@@ -14,6 +14,24 @@
 
 //=============================================================================
 //
+//                     Matrix Utility Helper Management Functions
+//
+//=============================================================================
+
+/*!
+ * @ingroup MatrixUtilityHelper
+ * @brief Make the 1D index from 2D indexes for the matrix.
+ * @param matrix - the matrix for each index will be created
+ * @param row the desired rows.
+ * @param col the desired columns.
+ * @return Am 1D index.
+ */
+static size_t Matrix_MakeIndex(const Matrix * matrix, const size_t row, const size_t col){
+    return row * matrix->cols + col;
+}
+
+//=============================================================================
+//
 //                     Matrix Lifecycle Management Functions
 //
 //=============================================================================
@@ -77,7 +95,8 @@ float Matrix_GetCoordinate(const Matrix *matrix, const size_t row, const size_t 
     assert(row <= matrix->rows && "row index is out of range!");
     assert(col <= matrix->cols && "col index is out of range!");
 
-    return Array_GetValue(matrix->matrix, row * matrix->cols + col);
+    const size_t index = Matrix_MakeIndex(matrix, row, col);
+    return Array_GetValue(matrix->matrix, index);
 }
 
 Array* Matrix_GetRow(const Matrix *matrix, const size_t row){

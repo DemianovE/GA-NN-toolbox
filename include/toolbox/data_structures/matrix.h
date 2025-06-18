@@ -239,3 +239,13 @@ Matrix* Matrix_Subs(const Matrix *leftMatrix, const Matrix *rightMatrix);
 *
 * @note this will be seperated into a separate file as it is not directly interface operations
 */
+
+/**
+* @defgroup MatrixUtilityHelper Matrix Utility Helper
+* @ingroup Matrix
+* @brief Inner utility functions.
+*
+* This functions perform logics which cant be mapped to other groups and is static.
+*
+* @note this will be seperated into a separate file as it is not directly interface operations
+*/
