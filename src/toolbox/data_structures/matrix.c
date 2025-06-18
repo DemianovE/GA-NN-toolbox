@@ -50,7 +50,7 @@ Matrix* MatrixMakeCopy(const Matrix *input){
     /* Matrix *matrix - the output matrix pointer */
     Matrix *output = Matrix_Create(input->rows, input->cols);
 
-    Array_AppendPointer(output->matrix, input->matrix->data, input->rows * input->cols);
+    Array_AppendPointer(output->matrix, Array_GetArray(input->matrix), input->rows * input->cols);
     return output;
 }
 
@@ -77,7 +77,7 @@ float Matrix_GetCoordinate(const Matrix *matrix, const size_t row, const size_t 
     assert(row <= matrix->rows && "row index is out of range!");
     assert(col <= matrix->cols && "col index is out of range!");
 
-    return Array_GetCoordinate(matrix->matrix, row * matrix->cols + col);
+    return Array_GetValue(matrix->matrix, row * matrix->cols + col);
 }
 
 Array* Matrix_GetRow(const Matrix *matrix, const size_t row){

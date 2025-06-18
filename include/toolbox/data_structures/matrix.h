@@ -17,7 +17,7 @@
  * @ingroup Matrix
  * @details
  * This structure holds the necessary components for the matrix:
- * It contains the pointer to the array strucute and configuration number of columns and rows.
+ * It contains the pointer to the array structure and configuration number of columns and rows.
  *
  * @section MatrixStructDetails Detailed Structure Members
  * This section provides a detailed description of each member of the `Matrix` struct.
