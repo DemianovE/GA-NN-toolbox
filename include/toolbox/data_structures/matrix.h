@@ -61,7 +61,7 @@ Matrix* Matrix_Create(const size_t rows, const size_t cols);
 /*!
  * @ingroup MatrixLifecycle
  * @brief Creates and initializes a new matrix as well as populate it with values from the float tape pointer.
- * @param input the type float pointer with data to be used
+ * @param input the type float pointer with data to be used.
  * @param rows the desired number of rows.
  * @param cols the desired number of columns.
  * @return A pointer to the new Matrix instance.
@@ -79,7 +79,7 @@ Matrix* Matrix_MakeCopy(const Matrix *source);
 /*!
  * @ingroup MatrixLifecycle
  * @brief Destroy matrix pointer.
- * @param matrix the matrix to be destroyed
+ * @param matrix the matrix to be destroyed.
  */
 void Matrix_Destroy(Matrix *matrix);
 
@@ -94,21 +94,45 @@ void Matrix_Destroy(Matrix *matrix);
 /*!
  * @ingroup MatrixQuery
  * @brief Return the values of the matrix as specific 2D coordinate from 1D array.
- * @param matrix the matrix which value will be returned
+ * @param matrix the matrix which value will be returned.
  * @param row the desired row.
  * @param col the desired column.
- * @return A float value at the coordinate from matrix
+ * @return A float value at the coordinate from matrix.
  */
 float Matrix_GetCoordinate(const Matrix *matrix, const size_t row, const size_t col);
 
 /*!
  * @ingroup MatrixQuery
  * @brief Return the type float pointer of the matrix with values of one row.
- * @param matrix the matrix which value will be returned
+ * @param matrix the matrix which value will be returned.
  * @param row the desired row.
- * @return An Array instance with the row objects
+ * @return An Array instance with the row objects.
  */
 Array* Matrix_GetRow(const Matrix *matrix, const size_t row);
+
+/*!
+ * @ingroup MatrixQuery
+ * @brief Return the matrix array data.
+ * @param matrix the matrix which value will be returned.
+ * @return An Array instance.
+ */
+Array* Matrix_GetMatrix(const Matrix *matrix);
+
+/*!
+ * @ingroup MatrixQuery
+ * @brief Return the matrix rows value.
+ * @param matrix the matrix which value will be returned.
+ * @return The size_t value of rows count.
+ */
+size_t Matrix_GetRows(const Matrix *matrix);
+
+/*!
+ * @ingroup MatrixQuery
+ * @brief Return the matrix cols value.
+ * @param matrix the matrix which value will be returned.
+ * @return The size_t value of cols count.
+ */
+size_t Matrix_GetCols(const Matrix *matrix);
 
 //=============================================================================
 //
@@ -119,14 +143,14 @@ Array* Matrix_GetRow(const Matrix *matrix, const size_t row);
 /*!
  * @ingroup MatrixManipulation
  * @brief Delete the data of the matrix.
- * @param matrix the matrix which data is to be deleted
+ * @param matrix the matrix which data is to be deleted.
  */
 void Matrix_Delete(Matrix *matrix);
 
 /*!
  * @ingroup MatrixManipulation
  * @brief Set the value in the matrix at specific coordinated to the provided.
- * @param matrix the matrix which data is to be modified
+ * @param matrix the matrix which data is to be modified.
  * @param row the desired row.
  * @param col the desired column.
  * @param value the value to be set.
@@ -135,8 +159,17 @@ void Matrix_SetCoordinate(const Matrix *matrix, const size_t row, const size_t c
 
 /*!
  * @ingroup MatrixManipulation
+ * @brief Set the row in the matrix to given values.
+ * @param matrix the matrix which data is to be modified.
+ * @param row the desired row.
+ * @param data the float type pointer with values to be set.
+ */
+void Matrix_SetRow(const Matrix *matrix, const size_t row, const float *data);
+
+/*!
+ * @ingroup MatrixManipulation
  * @brief Apply a function to all values of the matrix.
- * @param matrix the matrix which data is to be modified
+ * @param matrix the matrix which data is to be modified.
  * @param func_ptr the function to be applied to all values.
  */
 void Matrix_ApplyFormula(const Matrix *matrix, float (*func_ptr)(float));
@@ -144,7 +177,7 @@ void Matrix_ApplyFormula(const Matrix *matrix, float (*func_ptr)(float));
 /*!
  * @ingroup MatrixManipulation
  * @brief Change the dimensions of the matrix.
- * @param matrix the matrix which data is to be modified
+ * @param matrix the matrix which data is to be modified.
  * @param rows the desired new row count.
  * @param cols the desired new column count.
  *
@@ -245,7 +278,7 @@ Matrix* Matrix_Subs(const Matrix *leftMatrix, const Matrix *rightMatrix);
 * @ingroup Matrix
 * @brief Inner utility functions.
 *
-* This functions perform logics which cant be mapped to other groups and is static.
+* This functions perform logics which can't be mapped to other groups and is static.
 *
 * @note this will be seperated into a separate file as it is not directly interface operations
 */
