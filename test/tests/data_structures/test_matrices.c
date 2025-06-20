@@ -1,5 +1,5 @@
-#include "data_structures/matrix.h"
-#include "neural/activation_fnc.h"
+#include "matrix.h"
+#include "activation_fnc.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,109 +14,101 @@ Matrix *resultTwo;
 
 static void printMatrix(const Matrix *matrix, char *name){
   printf("result of the %s:\n", name);
-  for (int x = 0; x < matrix->rows; x++){
-    for (int y = 0; y < matrix->cols; y++) printf("%f ", matrix->matrix[x][y]);
+  for (int x = 0; x < Matrix_GetRows(matrix); x++){
+    for (int y = 0; y < Matrix_GetCols(matrix); y++) printf("%f ", Matrix_GetCoordinate(matrix, x, y));
   }
   printf("\n");
 }
 
 static void compareMatrices(const Matrix *a, const Matrix *b){
   // check if both matrix's have the same size
-  TEST_ASSERT_EQUAL(a->rows, b->rows);
-  TEST_ASSERT_EQUAL(a->cols, b->cols);
+  TEST_ASSERT_EQUAL(Matrix_GetRows(a), Matrix_GetRows(b));
+  TEST_ASSERT_EQUAL(Matrix_GetCols(a), Matrix_GetCols(b));
 
-  // check if the values are same
-  for(int x=0; x<a->rows; x++){
-    TEST_ASSERT_EQUAL_FLOAT_ARRAY(a->matrix[x], b->matrix[x], a->cols);
-  }
+  TEST_ASSERT_EQUAL_FLOAT_ARRAY(Array_GetArray(Matrix_GetMatrix(a)), Array_GetArray(Matrix_GetMatrix(b)), Matrix_GetRows(a) * Matrix_GetCols(a));
 }
 
 void setUp(void){
-  desiredOne = MatrixCreate(2, 2);
-  desiredTwo = MatrixCreate(2, 2);
+  desiredOne = Matrix_Create(1, 4);
+  desiredTwo = Matrix_Create(1, 4);
 
-  resultOne = MatrixCreate(2, 2);
-  resultTwo = MatrixCreate(2, 2);
+  resultOne = Matrix_Create(1, 4);
+  resultTwo = Matrix_Create(1, 4);
 
-  resultOne->matrix[0][0] = 1;
-  resultOne->matrix[0][1] = 1;
-  resultOne->matrix[1][0] = 1;
-  resultOne->matrix[1][1] = 1;
+  const float data[] = {1.0f, 1.0f, 1.0f, 1.0f};
 
-  resultTwo->matrix[0][0] = 1;
-  resultTwo->matrix[0][1] = 1;
-  resultTwo->matrix[1][0] = 1;
-  resultTwo->matrix[1][1] = 1;
+  Matrix_SetRow(resultOne, 0, data);
+  Matrix_SetRow(resultTwo, 0, data);
+
+  Matrix_Reshape(resultOne, 2, 2);
+  Matrix_Reshape(resultTwo, 2, 2);
 }
 
 void tearDown(void){
-  MatrixDelete(desiredOne);
-  MatrixDelete(desiredTwo);
+  Matrix_Destroy(desiredOne);
+  Matrix_Destroy(desiredTwo);
 
-  MatrixDelete(resultOne);
-  MatrixDelete(resultTwo);
+  Matrix_Destroy(resultOne);
+  Matrix_Destroy(resultTwo);
 }
 
-void testMatrixAddSub(void){
-  desiredOne->matrix[0][0] = 2;
-  desiredOne->matrix[0][1] = 2;
-  desiredOne->matrix[1][0] = 2;
-  desiredOne->matrix[1][1] = 2;
+void testMatrix_AddSub(void){
+  const float dataOne[] = {2.0f, 2.0f, 2.0f, 2.0f};
+  Matrix_SetRow(desiredOne, 0, dataOne);
+  Matrix_Reshape(desiredOne, 2, 2);
 
-  desiredTwo->matrix[0][0] = 0;
-  desiredTwo->matrix[0][1] = 0;
-  desiredTwo->matrix[1][0] = 0;
-  desiredTwo->matrix[1][1] = 0;
+  const float dataTwo[] = {.0f, .0f, .0f, .0f};
+  Matrix_SetRow(desiredTwo, 0, dataTwo);
+  Matrix_Reshape(desiredTwo, 2, 2);
 
   // type: 0 - sub, 1 - add
-  Matrix *add = MatrixSubstAdd(resultOne, resultTwo, 1);
+  Matrix *add = Matrix_Add(resultOne, resultTwo);
   printMatrix(add, "add");
 
   // type: 0 - sub, 1 - add
-  Matrix *sub = MatrixSubstAdd(resultOne, resultTwo, 0);
+  Matrix *sub = Matrix_Subs(resultOne, resultTwo);
   printMatrix(sub, "sub");
 
   compareMatrices(add, desiredOne);
   compareMatrices(sub, desiredTwo);
 
-  MatrixDelete(add);
-  MatrixDelete(sub);
+  Matrix_Destroy(add);
+  Matrix_Destroy(sub);
 }
 
-void testMatrixMultiply(void){
-  desiredOne->matrix[0][0] = 2;
-  desiredOne->matrix[0][1] = 2;
-  desiredOne->matrix[1][0] = 2;
-  desiredOne->matrix[1][1] = 2;
+void testMatrix_Multiply(void){
+  const float data[] = {1.0f, 1.0f, 1.0f, 1.0f};
+  Matrix_SetRow(desiredOne, 0, data);
+  Matrix_Reshape(desiredOne, 2, 2);
 
-  Matrix *mult = MatrixMultiply(resultOne, resultTwo);
+  Matrix *mult = Matrix_Multiply(resultOne, resultTwo);
   printMatrix(mult , "multiply");
 
   compareMatrices(mult, desiredOne);
-  MatrixDelete(mult);
+  Matrix_Destroy(mult);
 }
 
-void testMatrixAllValuesFormula(void){
+void testMatrix_AllValuesFormula(void){
   float (*func_ptr_tan)(float);
   selectTangActivationFunction(&func_ptr_tan);
 
   float (*func_ptr_sigma)(float);
   selectSigmActivationFunction(&func_ptr_sigma);
 
-  desiredOne->matrix[0][0] = func_ptr_tan(1);
-  desiredOne->matrix[0][1] = func_ptr_tan(1);
-  desiredOne->matrix[1][0] = func_ptr_tan(1);
-  desiredOne->matrix[1][1] = func_ptr_tan(1);
+  const float valueOne = func_ptr_tan(1);
+  const float dataOne[] = {valueOne, valueOne, valueOne, valueOne};
+  Matrix_SetRow(desiredOne, 0, dataOne);
+  Matrix_Reshape(desiredOne, 2, 2);
 
-  desiredTwo->matrix[0][0] = func_ptr_sigma(1);
-  desiredTwo->matrix[0][1] = func_ptr_sigma(1);
-  desiredTwo->matrix[1][0] = func_ptr_sigma(1);
-  desiredTwo->matrix[1][1] = func_ptr_sigma(1);
+  const float valueTwo = func_ptr_sigma(1);
+  const float dataTwo[] = {valueTwo, valueTwo, valueTwo, valueTwo};
+  Matrix_SetRow(desiredTwo, 0, dataTwo);
+  Matrix_Reshape(desiredTwo, 2, 2);
 
-  MatrixApplyFormula(resultOne, func_ptr_tan);
+  Matrix_ApplyFormula(resultOne, func_ptr_tan);
   printMatrix(resultOne, "tan");
 
-  MatrixApplyFormula(resultTwo, func_ptr_sigma);
+  Matrix_ApplyFormula(resultTwo, func_ptr_sigma);
   printMatrix(resultTwo, "sigma");
 
   compareMatrices(resultOne, desiredOne);
@@ -127,41 +119,39 @@ void testMatrixAllValuesFormula(void){
   func_ptr_sigma = NULL;
 }
 
-void testMatrixCreateFromPointer(void){
-  desiredOne->matrix[0][0] = 1;
-  desiredOne->matrix[0][1] = 2;
-  desiredOne->matrix[1][0] = 3;
-  desiredOne->matrix[1][1] = 4;
+void testMatrix_CreateFromPointer(void){
+  const float data[] = {1.0f, 2.0f, 3.0f, 4.0f};
+  Matrix_SetRow(desiredOne, 0, data);
+  Matrix_Reshape(desiredOne, 2, 2);
 
   const float dataPointer[] = {1.0f, 2.0f, 3.0f, 4.0f};
 
-  Matrix *data = MatrixCreateFromPointer(dataPointer, 2, 2);
-  printMatrix(data, "matrix from pointer");
+  Matrix *matrix = Matrix_CreateFromPointer(dataPointer, 2, 2);
+  printMatrix(matrix, "matrix from pointer");
 
-  compareMatrices(data, desiredOne);
-  MatrixDelete(data);
+  compareMatrices(matrix, desiredOne);
+  Matrix_Destroy(matrix);
 }
 
-void testMatrixFullyCoppyMatrix(void){
-  desiredOne->matrix[0][0] = 1;
-  desiredOne->matrix[0][1] = 2;
-  desiredOne->matrix[1][0] = 3;
-  desiredOne->matrix[1][1] = 4;
+void testMatrix_FullyCoppyMatrix(void){
+  const float data[] = {1.0f, 2.0f, 3.0f, 4.0f};
+  Matrix_SetRow(desiredOne, 0, data);
+  Matrix_Reshape(desiredOne, 2, 2);
 
-  Matrix *data = MatrixMakeCopy(desiredOne);
-  compareMatrices(data, desiredOne);
+  Matrix *matrix = Matrix_MakeCopy(desiredOne);
+  compareMatrices(matrix, desiredOne);
 
-  MatrixDelete(data);
+  Matrix_Destroy(matrix);
 }
 
 int main(void) {
   UNITY_BEGIN();
 
-  RUN_TEST(testMatrixAddSub);
-  RUN_TEST(testMatrixMultiply);
-  RUN_TEST(testMatrixAllValuesFormula);
-  RUN_TEST(testMatrixCreateFromPointer);
-  RUN_TEST(testMatrixFullyCoppyMatrix);
+  RUN_TEST(testMatrix_AddSub);
+  RUN_TEST(testMatrix_Multiply);
+  RUN_TEST(testMatrix_AllValuesFormula);
+  RUN_TEST(testMatrix_CreateFromPointer);
+  RUN_TEST(testMatrix_FullyCoppyMatrix);
 
   return UNITY_END();
 }
