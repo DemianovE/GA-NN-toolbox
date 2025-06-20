@@ -108,6 +108,22 @@ float Array_GetValue(const Array *array, const size_t index);
  */
 float* Array_GetArray(const Array *array);
 
+/*!
+ * @ingroup ArrayQuery
+ * @brief Return the array index from Array.
+ * @param array the array from which value will be retrieved.
+ * @return A size_t index value.
+ */
+size_t Array_GetIndex(const Array *array);
+
+/*!
+ * @ingroup ArrayQuery
+ * @brief Return the array length from Array.
+ * @param array the array from which value will be retrieved.
+ * @return A size_t length value.
+ */
+size_t Array_GetLength(const Array *array);
+
 
 //=============================================================================
 //
@@ -122,7 +138,7 @@ float* Array_GetArray(const Array *array);
  * @param start starting index of the slice.
  * @param numberOfElements number of elements in the slice.
  * @return A pointer to the new Array instance with the desired data.
- * @note this was created to make the Matrix function be able to get rows
+ * @note this was created to make the Matrix function be able to get rows.
  */
 Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size_t numberOfElements);
 
@@ -131,7 +147,7 @@ Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size
  * @brief Set the specific index of the Array to the provided value.
  * @param array the array which data will be altered.
  * @param index value of the index of desired placement.
- * @param value the value, which should be saved
+ * @param value the value, which should be saved.
  */
 void Array_SetCoordinate(const Array *array, const size_t index, const float value);
 
@@ -149,18 +165,34 @@ void Array_SetDataFromTo(const Array *array, const size_t start, const size_t nu
  * @ingroup ArrayManipulation
  * @brief Append new value at the end of the Array.
  * @param array the array to which the value will be added.
- * @param value the value, which will be appended
+ * @param value the value, which will be appended.
  */
 void Array_Append(Array *array, const float value);
 
 /*!
  * @ingroup ArrayManipulation
- * @brief Append array of elmeents of type float to the Array.
+ * @brief Append the array of elements of type float to the Array.
  * @param array the array to which the values will be added.
- * @param values the pointer to array of float values, which will be appended
- * @param pointerLength the length of the given pointer of new values
+ * @param values the pointer to array of float values, which will be appended.
+ * @param pointerLength the length of the given pointer of new values.
  */
 void Array_AppendPointer(Array *array, const float *values, const size_t pointerLength);
+
+
+
+//=============================================================================
+//
+//                     Array Utility Helper Functions
+//
+//=============================================================================
+
+/*!
+ * @ingroup ArrayUtilityHelper
+ * @brief Check if two arrays are equal.
+ * @param arrayOne the first array to compare.
+ * @param arrayTwo the second array to compare.
+ */
+int Array_CheckEqual(const Array *arrayOne, const Array *arrayTwo);
 
 #endif //ARRAY_H
 
@@ -192,4 +224,14 @@ void Array_AppendPointer(Array *array, const float *values, const size_t pointer
 * @brief Manipulation of the Data Structure Array.
 *
 * This functions make write operations on data
+*/
+
+/**
+* @defgroup ArrayUtilityHelper Array Utility Helper
+* @ingroup Array
+* @brief Inner utility functions.
+*
+* This functions perform logics which can't be mapped to other groups and is static.
+*
+* @note this will be seperated into a separate file as it is not directly interface operations
 */
