@@ -2,8 +2,10 @@
  * @file array.h
  * @brief Dynamic Array data structure public interface.
  *
- * This header defines the public interface for the Array data structure.
+ * This header defines the public interface for the generic Array
  * It includes type definitions and function declarations.
+ * Please note, this interface is a base for type cast interfaces which can be then used. This interface
+ * should not be used outside the type cast interfaces definitions
  */
 
 #ifndef ARRAY_H
@@ -22,11 +24,11 @@
  * @section ArrayStructDetails Detailed Structure Members
  * This section provides a detailed description of each member of the `Array` struct.
  *
- * @var float* Array::data
- * A pointer to the dynamically allocated block of `float` elements.
+ * @var void* Array::data
+ * A pointer to the dynamically allocated block of `void` elements.
  * This buffer holds the actual elements of the array.
  *
- * @var size_t Array::length
+ * @var size_t Array::capacity
  * The total allocated memory capacity of the array (number of elements).
  * This value determines how many elements the `data` buffer can currently hold
  * without requiring a reallocation.
@@ -35,11 +37,15 @@
  * The current number of elements actually stored and used in the array.
  * This value represents the logical size of the array, indicating the next
  * available position for new elements.
+ *
+ * @var size_t Array::item_size
+ * The size of the items which will be stored in the array
  */
 typedef struct Array {
-  float *data; // the array itself
-  size_t length; // the length og the array
+  void *data; // the array itself
+  size_t capacity; // the capacity of the array
   size_t index; // the index of the next free cell of the array (used for inner size calculations)
+  size_t item_size; // the size of the saved items
 } Array;
 
 
@@ -54,10 +60,11 @@ typedef struct Array {
 /*!
  * @ingroup ArrayLifecycle
  * @brief Creates and initializes a new dynamic array.
- * @param length the desired length of the array.
+ * @param capacity the desired capacity of the array.
+ * @param item_size the size of items which will be stored
  * @return A pointer to the new Array instance.
  */
-Array* Array_Create(const size_t length);
+Array* Array_Create(const size_t capacity, const size_t item_size);
 
 /*!
  * @ingroup ArrayLifecycle
@@ -96,17 +103,25 @@ void Array_Destroy(Array *array);
  * @brief Return the specific index data from Array.
  * @param array the array from which indexed value will be retrieved.
  * @param index value of the index of desired value.
- * @return A float value of the index.
+ * @return A void* pointer to actual value.
  */
-float Array_GetValue(const Array *array, const size_t index);
+void* Array_GetValue(const Array *array, const size_t index);
 
 /*!
  * @ingroup ArrayQuery
  * @brief Return the array itself from Array.
  * @param array the array from which values will be retrieved.
- * @return A float type pointer array of values.
+ * @return A void type pointer array of values.
  */
-float* Array_GetArray(const Array *array);
+void* Array_GetArray(const Array *array);
+
+/*!
+ * @ingroup ArrayQuery
+ * @brief Return the array item size from Array.
+ * @param array the array from which value will be retrieved.
+ * @return A size_t item size value.
+ */
+size_t Array_GetItemSize(const Array *array);
 
 /*!
  * @ingroup ArrayQuery
@@ -118,11 +133,11 @@ size_t Array_GetIndex(const Array *array);
 
 /*!
  * @ingroup ArrayQuery
- * @brief Return the array length from Array.
+ * @brief Return the array capacity from Array.
  * @param array the array from which value will be retrieved.
- * @return A size_t length value.
+ * @return A size_t capacity value.
  */
-size_t Array_GetLength(const Array *array);
+size_t Array_GetCapacity(const Array *array);
 
 
 //=============================================================================
@@ -144,12 +159,12 @@ Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size
 
 /*!
  * @ingroup ArrayManipulation
- * @brief Set the specific index of the Array to the provided value.
+ * @brief Set the specific index of the Array to the provided value. Due to void nature of Array, the address in memory shift is used to memcpy the value.
  * @param array the array which data will be altered.
  * @param index value of the index of desired placement.
  * @param value the value, which should be saved.
  */
-void Array_SetCoordinate(const Array *array, const size_t index, const float value);
+void Array_SetCoordinate(const Array *array, const size_t index, const void* value);
 
 /*!
  * @ingroup ArrayManipulation
@@ -157,9 +172,9 @@ void Array_SetCoordinate(const Array *array, const size_t index, const float val
  * @param array the array which will be manipulated.
  * @param start starting index of the slice.
  * @param numberOfElements number of elements in the slice.
- * @param values the float type pointer to the data to be added.
+ * @param values the void type pointer to the data to be added.
  */
-void Array_SetDataFromTo(const Array *array, const size_t start, const size_t numberOfElements, const float *values);
+void Array_SetDataFromTo(const Array *array, const size_t start, const size_t numberOfElements, const void *values);
 
 /*!
  * @ingroup ArrayManipulation
@@ -167,16 +182,16 @@ void Array_SetDataFromTo(const Array *array, const size_t start, const size_t nu
  * @param array the array to which the value will be added.
  * @param value the value, which will be appended.
  */
-void Array_Append(Array *array, const float value);
+void Array_Append(Array *array, const void *value);
 
 /*!
  * @ingroup ArrayManipulation
- * @brief Append the array of elements of type float to the Array.
+ * @brief Append the array of elements of type void to the Array.
  * @param array the array to which the values will be added.
- * @param values the pointer to array of float values, which will be appended.
+ * @param values the pointer to array of void values, which will be appended.
  * @param pointerLength the length of the given pointer of new values.
  */
-void Array_AppendPointer(Array *array, const float *values, const size_t pointerLength);
+void Array_AppendPointer(Array *array, const void *values, const size_t pointerLength);
 
 
 
@@ -203,8 +218,14 @@ int Array_CheckEqual(const Array *arrayOne, const Array *arrayTwo);
 */
 
 /**
-* @defgroup ArrayLifecycle Array Lifecycle
+* @defgroup ArrayGeneric Array Generic
 * @ingroup Array
+* @brief Functions of the Data Structure Array Generic.
+*/
+
+/**
+* @defgroup ArrayLifecycle Array Lifecycle
+* @ingroup ArrayGeneric
 * @brief Lifecycle functions of the Array.
 *
 * This functions create/destroy/copy Array
@@ -212,7 +233,7 @@ int Array_CheckEqual(const Array *arrayOne, const Array *arrayTwo);
 
 /**
 * @defgroup ArrayQuery Array Query
-* @ingroup Array
+* @ingroup ArrayGeneric
 * @brief Query of the Data Structure Array.
 *
 * This functions make read-only operations on data
@@ -220,7 +241,7 @@ int Array_CheckEqual(const Array *arrayOne, const Array *arrayTwo);
 
 /**
 * @defgroup ArrayManipulation Array Manipulation
-* @ingroup Array
+* @ingroup ArrayGeneric
 * @brief Manipulation of the Data Structure Array.
 *
 * This functions make write operations on data
@@ -228,7 +249,7 @@ int Array_CheckEqual(const Array *arrayOne, const Array *arrayTwo);
 
 /**
 * @defgroup ArrayUtilityHelper Array Utility Helper
-* @ingroup Array
+* @ingroup ArrayGeneric
 * @brief Inner utility functions.
 *
 * This functions perform logics which can't be mapped to other groups and is static.
