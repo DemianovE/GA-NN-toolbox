@@ -41,12 +41,7 @@
  * @var size_t Array::item_size
  * The size of the items which will be stored in the array
  */
-typedef struct Array {
-  void *data; // the array itself
-  size_t capacity; // the capacity of the array
-  size_t index; // the index of the next free cell of the array (used for inner size calculations)
-  size_t item_size; // the size of the saved items
-} Array;
+typedef struct Array Array;
 
 
 
@@ -162,19 +157,19 @@ Array* Array_ReturnDataFromTo(const Array *array, const size_t start, const size
  * @brief Set the specific index of the Array to the provided value. Due to void nature of Array, the address in memory shift is used to memcpy the value.
  * @param array the array which data will be altered.
  * @param index value of the index of desired placement.
- * @param value the value, which should be saved.
+ * @param newValue the value, which should be saved.
  */
-void Array_SetCoordinate(const Array *array, const size_t index, const void* value);
+void Array_SetCoordinate(const Array *array, const size_t index, const void* newValue);
 
 /*!
  * @ingroup ArrayManipulation
  * @brief Set several new values at specified position.
  * @param array the array which will be manipulated.
- * @param start starting index of the slice.
+ * @param index starting index of the slice.
  * @param numberOfElements number of elements in the slice.
- * @param values the void type pointer to the data to be added.
+ * @param newValues the void type pointer to the data to be added.
  */
-void Array_SetDataFromTo(const Array *array, const size_t start, const size_t numberOfElements, const void *values);
+void Array_SetDataFromTo(const Array *array, const size_t index, const size_t numberOfElements, const void *newValues);
 
 /*!
  * @ingroup ArrayManipulation
@@ -192,22 +187,6 @@ void Array_Append(Array *array, const void *value);
  * @param pointerLength the length of the given pointer of new values.
  */
 void Array_AppendPointer(Array *array, const void *values, const size_t pointerLength);
-
-
-
-//=============================================================================
-//
-//                     Array Utility Helper Functions
-//
-//=============================================================================
-
-/*!
- * @ingroup ArrayUtilityHelper
- * @brief Check if two arrays are equal.
- * @param arrayOne the first array to compare.
- * @param arrayTwo the second array to compare.
- */
-int Array_CheckEqual(const Array *arrayOne, const Array *arrayTwo);
 
 #endif //ARRAY_H
 
