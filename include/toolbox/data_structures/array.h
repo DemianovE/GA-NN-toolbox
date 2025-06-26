@@ -68,7 +68,7 @@ Array* Array_Create(const size_t capacity, const size_t item_size);
  * @param array2 the array to be concatenated.
  * @return A pointer to the new Array instance.
  */
-Array* Array_Concat(const Array* array1, const Array* array2);
+Array* Array_Concat(const Array *array1, const Array *array2);
 
 /*!
  * @ingroup ArrayLifecycle

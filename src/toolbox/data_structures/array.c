@@ -24,8 +24,8 @@ static void Array_SetItemSize(Array *array, size_t item_size);
 static void Array_SetIndex(Array *array, size_t index);
 static void Array_SetCapacity(Array *array, size_t capacity);
 static void Array_SetArray(Array *array, float *data);
-static void* Array_GetValueIndex(const Array* array, const size_t index);
-static void Array_SetValuesInArray(const Array* array, const size_t index, const void* newValue, const size_t size);
+static void* Array_GetValueIndex(const Array *array, const size_t index);
+static void Array_SetValuesInArray(const Array *array, const size_t index, const void *newValue, const size_t size);
 
 //=============================================================================
 //
@@ -55,7 +55,7 @@ Array* Array_Create(const size_t capacity, const size_t item_size){
   return array;
 }
 
-Array* Array_Concat(const Array* array1, const Array* array2){
+Array* Array_Concat(const Array *array1, const Array *array2){
   assert(array1 != NULL && "The array1 can be NULL!");
   assert(array2 != NULL && "The array2 can be NULL!");
 
@@ -120,7 +120,7 @@ size_t Array_GetCapacity(const Array *array) { return array->capacity; }
  *
  * @warning The function is meant to be the sole memory source in the interface, to make memory related issues not an issue
  */
-static void Array_SetValuesInArray(const Array* array, const size_t index, const void* newValue, const size_t size) { memcpy(Array_GetValueIndex(array, index), newValue, size); }
+static void Array_SetValuesInArray(const Array *array, const size_t index, const void* newValue, const size_t size) { memcpy(Array_GetValueIndex(array, index), newValue, size); }
 
 
 //=============================================================================
@@ -247,6 +247,6 @@ void Array_AppendPointer(Array *array, const void *values, const size_t pointerL
  * @param array the array which data will be altered.
  * @param index the shift of elements
  */
-static void* Array_GetValueIndex(const Array* array, const size_t index){
+static void* Array_GetValueIndex(const Array *array, const size_t index){
   return (char*)Array_GetArray(array) + (index * Array_GetItemSize(array));
 }

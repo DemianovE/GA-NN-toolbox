@@ -34,7 +34,7 @@ static ArrayFloat* ArrayFloat_Create(const size_t capacity) { return Array_Creat
  * @param array2 the array to be concatenated.
  * @return A pointer to the new Array instance.
  */
-static ArrayFloat* ArrayFloat_Concat(const ArrayFloat* array1, const ArrayFloat* array2) { return Array_Concat(array1, array2); }
+static ArrayFloat* ArrayFloat_Concat(const ArrayFloat *array1, const ArrayFloat* array2) { return Array_Concat(array1, array2); }
 
 /*!
  * @ingroup ArrayFloatLifecycle
