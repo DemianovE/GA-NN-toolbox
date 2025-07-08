@@ -33,8 +33,24 @@ Chromosome* Chromosome_Create(const size_t numberOfElements){
   return chromosome;
 }
 
+
+
+//=============================================================================
+//
+//                     Array Query Functions
+//
+//=============================================================================
+
 size_t Chromosome_GetFit(const Chromosome *chromosome) { return chromosome->fit; }
 ArrayFloat* Chromosome_GetWeights(const Chromosome *chromosome) { return chromosome->weights; }
+
+
+
+//=============================================================================
+//
+//                     Array Manipulation Functions
+//
+//=============================================================================
 
 void Chromosome_SetFit(Chromosome *chromosome, const size_t fit) { assert(fit >= 0  && "fit must be positive!"); chromosome->fit = fit; }
 void Chromosome_SetWeights(Chromosome *chromosome, ArrayFloat *weights) { chromosome->weights = weights; }
