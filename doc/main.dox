@@ -1,0 +1,32 @@
+/**
+ * @mainpage NN GA toolbox
+ *
+ * @section intro Introduction
+ * Welcome to the comprehensive documentation for NN GA Toolbox.
+ * This library is an academic project to create a comprehensive trained NN creation for purposes of system control.
+ * The project was previously implemented in the MATLAB as well as Python test toolbox. Current implementation
+ * aims at creating more permanent solution
+ *
+ * The project is split into submodules.
+ * - genetic - genetic operations and related topics
+ * - neural - NN implementation
+ * - general - general purpose functions
+ * - data structures - DS interfaces used in the project
+ *
+ * @subsection set_up Set up
+ * The project currently is using CMakeList for building. Previously make
+ * was used but is currently deprecated. The project is in active development so
+ * there is no active runtime option and tests are used instead. The aim is to introduce config based
+ * runtime. Please note - as this is not user oriented project but internal toolbox, most functions in case of error terminate code, as this indicates
+ * programing error. So, error handling is quite straight forward
+ *
+ * @subsection available_ds Available Data Structures
+ * Explore the detailed documentation for each data structure:
+ * - @subpage array_ds_page "Dynamic Array (Array)"
+ */
+
+
+/**
+* @defgroup DataStructures Data Structures
+* @brief Data Structures used in the project
+*/
