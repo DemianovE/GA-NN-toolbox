@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.31)
 project(DS_Core C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 23)
 
 file(GLOB_RECURSE MYLIB_SRC CONFIGURE_DEPENDS src/*.c)
 add_library(mylib STATIC ${MYLIB_SRC})
